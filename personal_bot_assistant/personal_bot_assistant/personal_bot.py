@@ -2,7 +2,7 @@
 import pickle
 from collections import UserDict
 from datetime import datetime
-from .class_file import AddressBook, Record
+from class_file import AddressBook, Record
 
 def decorator(func):
     """Decorator"""
