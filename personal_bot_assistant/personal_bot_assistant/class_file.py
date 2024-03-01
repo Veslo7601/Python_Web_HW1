@@ -4,10 +4,8 @@ from collections import UserDict
 from datetime import datetime
 from dateutil.parser import parse
 
-
 class Field:
     """Class representing a default class"""
-
     def __init__(self, value):
         self.__value = None
         self.value = value
@@ -15,10 +13,8 @@ class Field:
     def __str__(self):
         return str(self.value)
 
-
 class Name(Field):
     """Class representing a Name"""
-
 
 class Phone(Field):
     """Class representing a Phone"""
@@ -38,7 +34,6 @@ class Phone(Field):
         else:
             self.__value = value
 
-
 class Address(Field):
     """Class representing a Address """
 
@@ -51,7 +46,6 @@ class Address(Field):
     def value(self, value):
         """Setter"""
         self.__value = value
-
 
 class Email(Field):
     """Class representing a Email """
@@ -86,7 +80,6 @@ class Birthday(Field):
             self.__value = correct
         else:
             raise ValueError ("The date is incorrect")
-
 
 class Record:
     """Class representing a Record"""
@@ -226,7 +219,7 @@ class AddressBook(UserDict):
             names = str(contact.name)
             if names.find(value) != -1:
                 #contact_list.append(f"{contact} have word {value}")
-                 yield f"{contact} have word <{value}>"
+                yield f"{contact} have word <{value}>"
 
             for phone in contact.phones:
                 contact_phone = str(phone)
