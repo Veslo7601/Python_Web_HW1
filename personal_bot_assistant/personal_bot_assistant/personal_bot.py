@@ -35,7 +35,7 @@ def decorator(func):
 
 
 class Bot(class_hello):
-
+    """   """
     def command_hello(self):
         """Function Hello"""
         return "How can I help you?"
@@ -154,7 +154,7 @@ def command_add_birthday(name, birthday):
         new_birthday = book.find(name)
         new_birthday.add_birthday(birthday)
         return "Birthday added successfully"
-    
+
 def command_show_birthday(days: int):
     cnt = 0
     for contact in book.values():
