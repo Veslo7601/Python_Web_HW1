@@ -183,6 +183,7 @@ class Record:
 
     # days_to_birthday
     def days_to_birthday(self)->int:
+        """function"""
         birthday = self.birthday.value
         current_date = datetime.now().date()
         birthday_date_this_year = parse(birthday, fuzzy=False).replace(year = datetime.now().year).date()

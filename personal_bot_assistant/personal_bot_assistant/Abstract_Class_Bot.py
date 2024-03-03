@@ -1,13 +1,13 @@
 from abc import ABC, abstractclassmethod
 
-class class_hello(ABC):
+class Hello(ABC):
 
     @classmethod
     @abstractclassmethod
     def command_hello(self):
         pass
 
-class class_start_save(ABC):
+class StartSave(ABC):
 
     @classmethod
     @abstractclassmethod
@@ -19,3 +19,14 @@ class class_start_save(ABC):
     def save(self):
         pass
 
+class GoodBye(ABC):
+    @classmethod
+    @abstractclassmethod
+    def command_good_bye(self):
+        pass
+
+class Help(ABC):
+    @classmethod
+    @abstractclassmethod
+    def command_help_info(self):
+        pass
