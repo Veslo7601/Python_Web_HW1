@@ -11,3 +11,9 @@ class FindTag(ABC):
     @abstractclassmethod
     def command_find_tag(self):
         pass
+
+class DeleteTag(ABC):
+    @classmethod
+    @abstractclassmethod
+    def command_delete_tag(self):
+        pass

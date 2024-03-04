@@ -9,5 +9,5 @@ class AddEmail(ABC):
 class RemoveEmail(ABC):
     @classmethod
     @abstractclassmethod
-    def command_remove_email(self):
+    def command_delete_email(self):
         pass

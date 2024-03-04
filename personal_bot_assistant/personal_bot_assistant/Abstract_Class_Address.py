@@ -9,6 +9,5 @@ class AddAdress(ABC):
 class RemoveAddress(ABC):
     @classmethod
     @abstractclassmethod
-    def command_remove_address(self):
+    def command_delete_address(self):
         pass
-    

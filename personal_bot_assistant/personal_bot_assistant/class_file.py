@@ -4,6 +4,14 @@ from collections import UserDict
 from datetime import datetime
 from dateutil.parser import parse
 
+#from Abstarct_Class_Phone import ShowAll, AddRecord, FindRecord, DeleteRecord, UpdatePhone, RemovePhone, EditPhone
+from Abstarct_Class_Note import AddNote, DeleteNote, EditNote
+from Abstract_Class_Address import AddAdress, RemoveAddress
+from Abstract_Class_Email import AddEmail, RemoveEmail
+from Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
+from Abstract_Class_Tags import AddTag, FindTag, DeleteTag
+from Abstarct_Class_Sort import SortFile
+
 class Field:
     """Class representing a default class"""
     def __init__(self, value):
@@ -33,19 +41,6 @@ class Phone(Field):
             raise Exception ("There are extra characters in the number")
         else:
             self.__value = value
-
-class Address(Field):
-    """Class representing a Address """
-
-    @property
-    def value(self):
-        """Getter"""
-        return self.__value
-
-    @value.setter
-    def value(self, value):
-        """Setter"""
-        self.__value = value
 
 class Email(Field):
     """Class representing a Email """
@@ -81,51 +76,116 @@ class Birthday(Field):
         else:
             raise ValueError ("The date is incorrect")
 
-class Record:
-    """Class representing a Record"""
-
-    def __init__(self, name):
-
-        self.name = Name(name)
-        self.phones = []
-        self.birthday = " "
-        self.address = []
-        self.email = []
+class FunctionNote(AddNote, DeleteNote, EditNote):
+    """Class with functions note"""
+    def __init__(self):
         self.note = " "
-        self.tags = []
 
-    def add_teg(self, tags):
-        """Function add teg"""
-        self.tags.append(tags)
-
-    def add_note(self,value):
+    def command_add_note(self,value):
         """Function add note"""
-        self.note = " ".join(value)
+        self.note = " ".join(value)    
 
-    def delete_note(self):
+    def command_delete_note(self):
         """Function delete note"""
         self.note = " "
 
-    def edit_note(self, value):
+    def command_edit_note(self, value):
         """Function edit note"""
-        self.delete_note()
-        self.add_note(value)
+        self.command_delete_note()
+        self.command_add_note(value)
+
+class FunctionAddress(AddAdress, RemoveAddress):
+    """Class with functions address"""
+    def __init__(self):
+        self.address = " "
+
+    def command_add_address(self, value):
+        """function for adding address"""
+        self.address = " ".join(value)
+
+    def command_delete_address(self):
+        """function for delete address"""
+        self.address = " "
+
+class FunctionTag(AddTag, FindTag, DeleteTag):
+    """Class with functions tags"""
+    def __init__(self):
+        self.tags = []
+
+    def command_add_tag(self, tags):
+        """Function add teg"""
+        self.tags.append(tags)
+
+    def command_find_tag(self, value):
+        """Function find teg"""
+        for tag in self.tags:
+            if str(tag) == str(value):
+                return value
+
+    def command_delete_tag(self, value):
+        """Function delete teg"""
+        target = self.command_find_tag(value)
+        if target == value:
+            self.tags.remove(target)
+            return "Tag delete"
+
+class FunctionBirthdate(AddBirthday, RemoveBirthday, ShowBirthday):
+    """Class with functions birthday"""
+    def __init__(self):
+        self.birthday = " "
+
+    def command_add_birthday(self, value):
+        """function for adding birthday"""
+        self.birthday = Birthday(value)
+
+    def command_remove_birthday(self):
+        """function for remove birthday"""
+        self.birthday = ' '
+
+    def command_show_birthday(self)->int:
+        """function"""
+        birthday = self.birthday.value
+        current_date = datetime.now().date()
+        birthday_date_this_year = parse(birthday, fuzzy=False).replace(year = datetime.now().year).date()
+        delta = birthday_date_this_year - current_date
+        # if birthdate in future current year
+        if delta.days>0:
+            return delta.days
+        else: 
+            # If birthdate in current year has passed (calculate days to next year's date)
+            return (birthday_date_this_year.replace(year=current_date.year+1) - current_date).days
+
+class FunctionEmail(AddEmail, RemoveEmail):
+    """Class with functions email"""
+    def __init__(self):
+        self.email = []
+
+    def command_add_email(self, value):
+        """function for adding phones"""
+        self.email.append(Email(value))
+
+    def command_delete_email(self, value):
+        """function for remove email"""
+        find_email = self.find_email(value)
+        if find_email:
+            self.email.remove(find_email)
+        else:
+            raise ValueError()
+
+    def find_email(self, value):
+        """function for find email"""
+        for email in self.email:
+            if str(email) == str(value):
+                return email
+
+class FunctionPhone:
+    """Class with functions phone"""
+    def __init__(self):
+        self.phones = []
 
     def add_phone(self,value):
         """function for adding phones"""
         self.phones.append(Phone(value))
-
-    def add_address(self, value):
-        """function for adding phones"""
-        self.address.append(Address(" ".join(value)))
-
-    def add_email(self, value):
-        """function for adding phones"""
-        self.email.append(Email(value))
-
-    def add_birthday(self, value):
-        """function for adding phones"""
-        self.birthday = Birthday(value)
 
     def remove_phone(self,value):
         """function for remove phones"""
@@ -148,52 +208,20 @@ class Record:
             if str(phone) == str(value):
                 return phone
 
-    def remove_address(self, value):
-        """function for remove address"""
-        if self.find_address(value):
-            self.address.remove(self.find_address(value))
-        else:
-            raise ValueError()
+class Record(FunctionNote, FunctionAddress, FunctionTag, FunctionBirthdate, FunctionEmail, FunctionPhone):
+    """Class representing a Record"""
 
-    def find_address(self, value):
-        """function for find address"""
-        for address in self.address:
-            if str(address) == str(value):
-                return address
-
-    def remove_email(self, value):
-        """function for remove email"""
-        if self.find_email(value):
-            self.email.remove(self.find_email(value))
-        else:
-            raise ValueError()
-
-    def find_email(self, value):
-        """function for find email"""
-        for email in self.email:
-            if str(email) == str(value):
-                return email
-
-    def remove_birthday(self):
-        """function for remove birthday"""
-        self.birthday = ' '
+    def __init__(self, name):
+        self.name = Name(name)
+        super().__init__()
+        super(FunctionNote, self).__init__()
+        super(FunctionAddress, self).__init__()
+        super(FunctionTag, self).__init__()
+        super(FunctionBirthdate, self).__init__()
+        super(FunctionEmail, self).__init__()
 
     def __str__(self):
-        return f"Contact name: {self.name.value}\n\t-phones: {'; '.join(p.value for p in self.phones)}\n\t-email: {'; '.join(p.value for p in self.email)}\n\t-address: {'; '.join(p.value for p in self.address)} \n\t-birthday: {self.birthday}\n\t-note: {self.note}\n\t-tags: {self.tags}\n"
-
-    # days_to_birthday
-    def days_to_birthday(self)->int:
-        """function"""
-        birthday = self.birthday.value
-        current_date = datetime.now().date()
-        birthday_date_this_year = parse(birthday, fuzzy=False).replace(year = datetime.now().year).date()
-        delta = birthday_date_this_year - current_date
-        # if birthdate in future current year
-        if delta.days>0:
-            return delta.days
-        else: 
-            # If birthdate in current year has passed (calculate days to next year's date)
-            return (birthday_date_this_year.replace(year=current_date.year+1) - current_date).days
+        return f"Contact name: {self.name.value}\n\t-phones: {'; '.join(p.value for p in self.phones)}\n\t-email: {'; '.join(p.value for p in self.email)}\n\t-address: {self.address} \n\t-birthday: {self.birthday}\n\t-note: {self.note}\n\t-tags: {self.tags}\n"
 
 class AddressBook(UserDict):
     """Class representing a AddressBook"""
@@ -240,6 +268,6 @@ class AddressBook(UserDict):
         for contact in self.data.values():
             for tag in contact.tags:
                 if tags in tag:
-                    yield f"{contact} have note <{tags}>"
+                    yield f"{contact} have tag <{tags}>"
 
 #The file ends

@@ -14,7 +14,7 @@ from Abstarct_Class_Note import AddNote, DeleteNote, EditNote, FindNote
 from Abstract_Class_Address import AddAdress, RemoveAddress
 from Abstract_Class_Email import AddEmail, RemoveEmail
 from Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
-from Abstract_Class_Tags import AddTag, FindTag
+from Abstract_Class_Tags import AddTag, FindTag, DeleteTag
 from Abstarct_Class_Sort import SortFile
 
 def decorator(func):
@@ -93,21 +93,21 @@ class BotNote(AddNote, DeleteNote, EditNote, FindNote):
         """Function add note"""
         if book.find(name):
             record = book.find(name)
-            record.add_note(note)
+            record.command_add_note(note)
             return "Note added successfully"
 
     def command_delete_note(self, name):
         """Function delete note"""
         record = book.find(name)
         if record:
-            record.delete_note()
+            record.command_delete_note()
             return "Note delete"
 
     def command_edit_note(self, name, note):
         """Function edit note"""
         record = book.find(name)
         if record:
-            record.edit_note(note)
+            record.command_edit_note(note)
             return "Note edit"
 
     def command_find_note(self, value):
@@ -122,14 +122,14 @@ class BotAddress(AddAdress,RemoveAddress):
         """Adding a address"""
         if book.find(name):
             new_address = book.find(name)
-            new_address.add_address(address)
+            new_address.command_add_address(address)
             return "Address added successfully"
 
-    def command_remove_address(self, name, address):
+    def command_delete_address(self, name):
         """Deleting a address"""
         if book.find(name):
             record = book.find(name)
-            record.remove_address(address)
+            record.command_delete_address()
             return 'Address deleting'
 
 class BotEmail(AddEmail, RemoveEmail):
@@ -138,14 +138,14 @@ class BotEmail(AddEmail, RemoveEmail):
         """Adding a email"""
         if book.find(name):
             new_email = book.find(name)
-            new_email.add_email(email)
+            new_email.command_add_email(email)
             return "Email added successfully"
 
-    def command_remove_email(self, name, email):
+    def command_delete_email(self, name, email):
         """Deleting a email"""
-        if book.find(name):
-            record = book.find(name)
-            record.remove_email(email)
+        contact = book.find(name)
+        if contact:
+            contact.command_delete_email(email)
             return 'Email deleting'
 
 class BotBirthday(AddBirthday, RemoveBirthday, ShowBirthday):
@@ -154,21 +154,21 @@ class BotBirthday(AddBirthday, RemoveBirthday, ShowBirthday):
         """Adding a birthday"""
         if book.find(name):
             new_birthday = book.find(name)
-            new_birthday.add_birthday(birthday)
+            new_birthday.command_add_birthday(birthday)
             return "Birthday added successfully"
 
     def command_remove_birthday(self, name):
         """Deleting a birthday"""
         if book.find(name):
             record = book.find(name)
-            record.remove_birthday()
+            record.command_remove_birthday()
             return 'Birthda deleting'
 
     def command_show_birthday(self, days: int):
         """Show a date to birthday"""
         cnt = 0
         for contact in book.values():
-            if contact.days_to_birthday() - int(days) == 0:
+            if contact.command_show_birthday() - int(days) == 0:
                 print(f'{contact}')
                 cnt += 1
         if cnt > 0:
@@ -176,19 +176,26 @@ class BotBirthday(AddBirthday, RemoveBirthday, ShowBirthday):
         else:
             return f"There are no contacts that have birthdays in {days} days in the AddressBook"
 
-class BotTags(AddTag, FindTag):
+class BotTags(AddTag, FindTag, DeleteTag):
     """Class Tags"""
     def command_add_tag(self, name, tags):
         """Adding a tags"""
-        if book.find(name):
-            new_tags = book.find(name)
-            new_tags.add_teg(tags)
+        contact = book.find(name)
+        if contact:
+            contact.command_add_tag(tags)
             return "Tags added successfully"
 
     def command_find_tag(self, value):
         """Function find teg"""
         for i in book.search_notes_by_tag(value):
             print(i)
+
+    def command_delete_tag(self, name, tags):
+        """Function delete teg"""
+        contact = book.find(name)
+        if contact:
+            contact.command_delete_tag(tags)
+            return "Tag delete"
 
 class BotSortFile(SortFile):
     """Class sort file"""
@@ -292,10 +299,10 @@ class Bot(BotPhone, BotNote, BotAddress, BotEmail, BotBirthday, BotTags, BotSort
             "edit": bot.command_edit_phone,
 
             "add-address": bot.command_add_address,
-            "remove-address": bot.command_remove_address,
+            "delete-address": bot.command_delete_address,
 
             "add-email": bot.command_add_email,
-            "remove-email": bot.command_remove_email,
+            "delete-email": bot.command_delete_email,
 
             "add-birthday": bot.command_add_birthday,
             "remove-birthday": bot.command_remove_birthday,
@@ -310,6 +317,7 @@ class Bot(BotPhone, BotNote, BotAddress, BotEmail, BotBirthday, BotTags, BotSort
 
             "add-tag": bot.command_add_tag,
             "find-tag": bot.command_find_tag,
+            "delete-tag":bot.command_delete_tag,
 
         }
 
@@ -327,9 +335,9 @@ def command_parser(user_input):
         return bot.get_command(user_input)()
     else:
         user_input = user_input.split()
-        if user_input[0] in ["phone", "delete", "find", "delete-note", "find-note", "show-birthdate", "remove-birthday", "sort","find-tag",]:
+        if user_input[0] in ["phone", "delete", "find", "delete-note", "find-note", "show-birthdate", "remove-birthday", "sort", "find-tag", "delete-address"]:
             return bot.get_command(user_input[0])(user_input[1])
-        if user_input[0] in ["remove", "update", "add", "add-email", "add-birthday", "remove-address", "remove-email", "add-tag"]:
+        if user_input[0] in ["remove", "update", "add", "add-email", "add-birthday", "add-tag", "delete-tag", "delete-email"]:
             return bot.get_command(user_input[0])(user_input[1],(user_input[2]))
         if user_input[0] in ["write","add-address", "edit-note"]:
             return bot.get_command(user_input[0])(user_input[1],(user_input[2:]))
