@@ -8,14 +8,14 @@ from datetime import datetime
 
 from class_file import AddressBook, Record
 
-from Abstract_Class_Bot import Hello, StartSave, GoodBye, Help
-from Abstarct_Class_Phone import ShowAll, AddRecord, FindRecord, DeleteRecord, UpdatePhone, RemovePhone, EditPhone
-from Abstarct_Class_Note import AddNote, DeleteNote, EditNote, FindNote
-from Abstract_Class_Address import AddAdress, RemoveAddress
-from Abstract_Class_Email import AddEmail, RemoveEmail
-from Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
-from Abstract_Class_Tags import AddTag, FindTag, DeleteTag
-from Abstarct_Class_Sort import SortFile
+from Abstract_Class.Abstract_Class_Bot import Hello, StartSave, GoodBye, Help
+from Abstract_Class.Abstarct_Class_Phone import ShowAll, AddRecord, FindRecord, DeleteRecord, UpdatePhone, RemovePhone, EditPhone
+from Abstract_Class.Abstarct_Class_Note import AddNote, DeleteNote, EditNote, FindNote
+from Abstract_Class.Abstract_Class_Address import AddAdress, RemoveAddress
+from Abstract_Class.Abstract_Class_Email import AddEmail, RemoveEmail
+from Abstract_Class.Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
+from Abstract_Class.Abstract_Class_Tags import AddTag, FindTag, DeleteTag
+from Abstract_Class.Abstarct_Class_Sort import SortFile
 
 def decorator(func):
     """Decorator"""
@@ -166,15 +166,16 @@ class BotBirthday(AddBirthday, RemoveBirthday, ShowBirthday):
 
     def command_show_birthday(self, days: int):
         """Show a date to birthday"""
-        cnt = 0
-        for contact in book.values():
-            if contact.command_show_birthday() - int(days) == 0:
-                print(f'{contact}')
-                cnt += 1
-        if cnt > 0:
-            return f"Contacts that have birthday in {days} days are printed above"
-        else:
-            return f"There are no contacts that have birthdays in {days} days in the AddressBook"
+        pass
+        # cnt = 0
+        # for contact in book.values():
+        #     if contact.command_show_birthday() - int(days) == 0:
+        #         print(f'{contact}')
+        #         cnt += 1
+        # if cnt > 0:
+        #     return f"Contacts that have birthday in {days} days are printed above"
+        # else:
+        #     return f"There are no contacts that have birthdays in {days} days in the AddressBook"
 
 class BotTags(AddTag, FindTag, DeleteTag):
     """Class Tags"""

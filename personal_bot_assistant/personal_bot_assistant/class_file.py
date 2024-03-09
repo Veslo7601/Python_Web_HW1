@@ -2,15 +2,15 @@
 import re
 from collections import UserDict
 from datetime import datetime
-from dateutil.parser import parse
+# from dateutil.parser import parse
 
 #from Abstarct_Class_Phone import ShowAll, AddRecord, FindRecord, DeleteRecord, UpdatePhone, RemovePhone, EditPhone
-from Abstarct_Class_Note import AddNote, DeleteNote, EditNote
-from Abstract_Class_Address import AddAdress, RemoveAddress
-from Abstract_Class_Email import AddEmail, RemoveEmail
-from Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
-from Abstract_Class_Tags import AddTag, FindTag, DeleteTag
-from Abstarct_Class_Sort import SortFile
+from Abstract_Class.Abstarct_Class_Note import AddNote, DeleteNote, EditNote
+from Abstract_Class.Abstract_Class_Address import AddAdress, RemoveAddress
+from Abstract_Class.Abstract_Class_Email import AddEmail, RemoveEmail
+from Abstract_Class.Abstract_Class_Birthday import AddBirthday, RemoveBirthday, ShowBirthday
+from Abstract_Class.Abstract_Class_Tags import AddTag, FindTag, DeleteTag
+from Abstract_Class.Abstarct_Class_Sort import SortFile
 
 class Field:
     """Class representing a default class"""
@@ -144,16 +144,17 @@ class FunctionBirthdate(AddBirthday, RemoveBirthday, ShowBirthday):
 
     def command_show_birthday(self)->int:
         """function"""
-        birthday = self.birthday.value
-        current_date = datetime.now().date()
-        birthday_date_this_year = parse(birthday, fuzzy=False).replace(year = datetime.now().year).date()
-        delta = birthday_date_this_year - current_date
-        # if birthdate in future current year
-        if delta.days>0:
-            return delta.days
-        else: 
-            # If birthdate in current year has passed (calculate days to next year's date)
-            return (birthday_date_this_year.replace(year=current_date.year+1) - current_date).days
+        pass
+        # birthday = self.birthday.value
+        # current_date = datetime.now().date()
+        # birthday_date_this_year = parse(birthday, fuzzy=False).replace(year = datetime.now().year).date()
+        # delta = birthday_date_this_year - current_date
+        # # if birthdate in future current year
+        # if delta.days>0:
+        #     return delta.days
+        # else: 
+        #     # If birthdate in current year has passed (calculate days to next year's date)
+        #     return (birthday_date_this_year.replace(year=current_date.year+1) - current_date).days
 
 class FunctionEmail(AddEmail, RemoveEmail):
     """Class with functions email"""
