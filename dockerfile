@@ -4,7 +4,7 @@ WORKDIR /python_web_HW1
 
 COPY . .
 
-ENTRYPOINT [ "python", "personal_bot.py" ]
+ENTRYPOINT [ "python", "/python_web_HW1/personal_bot_assistant/personal_bot_assistant/personal_bot.py"]
 
 
 
